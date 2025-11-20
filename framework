@@ -1,0 +1,78 @@
+*1. Student.cs*
+
+```csharp
+using System.ComponentModel.DataAnnotations;
+
+namespace CodeFirstDemo
+{
+    public class Student
+    {
+        [Key]
+        public int StudentId { get; set; }
+        public string Name { get; set; }
+    }
+}
+```
+
+---
+
+*2. SchoolContext.cs*
+
+```csharp
+using System.Data.Entity;
+
+namespace CodeFirstDemo
+{
+    public class SchoolContext : DbContext
+    {
+        public SchoolContext() : base("name=SchoolDB")
+        {
+        }
+
+        public DbSet<Student> Students { get; set; }
+    }
+}
+```
+
+---
+
+*3. Program.cs*
+
+```csharp
+using System;
+
+namespace CodeFirstDemo
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            using (var context = new SchoolContext())
+            {
+                var student = new Student() { Name = "Walaa Alali" };
+                context.Students.Add(student);
+                context.SaveChanges();
+
+                Console.WriteLine("Student added successfully!");
+                Console.ReadLine();
+            }
+        }
+}
+}
+```
+
+---
+
+*App.config* (make sure to include the connection string)
+
+```xml
+<configuration>
+  <connectionStrings>
+    <add name="SchoolDB" 
+         connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SchoolDB;Integrated Security=True;"
+         providerName="System.Data.SqlClient" />
+  </connectionStrings>
+</configuration>
+```
+
+
